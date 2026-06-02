@@ -1,7 +1,7 @@
 # Alpine-based PHP-FPM and NGINX HumHub docker-container
 
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/55c4b00f6fb842fa86433ac5ade82fc7)](https://app.codacy.com/gh/jvies/humhub-docker/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
- [![Build](https://github.com/jvies/humhub-docker/actions/workflows/build.yml/badge.svg)](https://github.com/jvies/humhub-docker/actions/workflows/build.yml) ![Docker Pulls](https://img.shields.io/docker/pulls/jeremyvies/humhub)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/55c4b00f6fb842fa86433ac5ade82fc7)](https://app.codacy.com/gh/den-frie-vilje/humhub-docker/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+ [![Build](https://github.com/den-frie-vilje/humhub-docker/actions/workflows/build.yml/badge.svg)](https://github.com/den-frie-vilje/humhub-docker/actions/workflows/build.yml) ![Docker Pulls](https://img.shields.io/docker/pulls/jeremyvies/humhub)
 
 [HumHub](https://github.com/humhub/humhub) is a feature rich and highly flexible OpenSource Social Network Kit written in PHP.
 This container provides a quick, flexible and lightweight way to set up a proof-of-concept for detailed evaluation.
@@ -82,7 +82,7 @@ volumes:
 
 ## Advanced Config
 
-This container supports some further options which can be configured via environment variables. Look at the [docker-compose.yml](https://github.com/jvies/humhub-docker/blob/master/docker-compose.yml) for some inspiration.
+This container supports some further options which can be configured via environment variables. Look at the [docker-compose.yml](https://github.com/den-frie-vilje/humhub-docker/blob/master/docker-compose.yml) for some inspiration.
 
 ### Database Config
 
@@ -216,7 +216,7 @@ Please use the issues-page for bugs or suggestions. Pull-requests are highly wel
 
 Special thanks go to following contributors for there incredible work on this image:
 
-- [@jvies](https://github.com/jvies)
+- [@den-frie-vilje](https://github.com/den-frie-vilje)
 - [@madmath03](https://github.com/madmath03)
 - [@ArchBlood](https://github.com/ArchBlood)
 - [@pascalberger](https://github.com/pascalberger)
