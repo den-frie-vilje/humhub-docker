@@ -4,28 +4,28 @@ ARG BUILD_DEPS="\
     ca-certificates \
     nodejs \
     npm \
-    php84 \
-    php84-ctype \
-    php84-curl \
-    php84-dom \
-    php84-exif \
-    php84-fileinfo \
-    php84-gd \
-    php84-iconv \
-    php84-intl \
-    php84-json \
-    php84-ldap \
-    php84-mbstring \
-    php84-openssl \
-    php84-pdo_mysql \
-    php84-phar \
-    php84-simplexml \
-    php84-sodium \
-    php84-tokenizer \
-    php84-xml \
-    php84-xmlreader \
-    php84-xmlwriter \
-    php84-zip \
+    php85 \
+    php85-ctype \
+    php85-curl \
+    php85-dom \
+    php85-exif \
+    php85-fileinfo \
+    php85-gd \
+    php85-iconv \
+    php85-intl \
+    php85-json \
+    php85-ldap \
+    php85-mbstring \
+    php85-openssl \
+    php85-pdo_mysql \
+    php85-phar \
+    php85-simplexml \
+    php85-sodium \
+    php85-tokenizer \
+    php85-xml \
+    php85-xmlreader \
+    php85-xmlwriter \
+    php85-zip \
     composer \
     tzdata \
     "
@@ -35,40 +35,40 @@ ARG RUNTIME_DEPS="\
     curl \
     imagemagick \
     libintl \
-    php84 \
-    php84-apcu \
-    php84-bcmath \
-    php84-ctype \
-    php84-curl \
-    php84-dom \
-    php84-exif \
-    php84-fileinfo \
-    php84-fpm \
-    php84-gd \
-    php84-gmp \
-    php84-iconv \
-    php84-intl \
-    php84-json \
-    php84-ldap \
-    php84-mbstring \
-    php84-openssl \
-    php84-pdo_mysql \
-    php84-pecl-imagick \
-    php84-phar \
-    php84-session \
-    php84-simplexml \
-    php84-sodium \
-    php84-sqlite3 \
-    php84-xml \
-    php84-xmlreader \
-    php84-xmlwriter \
-    php84-zip \
+    php85 \
+    php85-apcu \
+    php85-bcmath \
+    php85-ctype \
+    php85-curl \
+    php85-dom \
+    php85-exif \
+    php85-fileinfo \
+    php85-fpm \
+    php85-gd \
+    php85-gmp \
+    php85-iconv \
+    php85-intl \
+    php85-json \
+    php85-ldap \
+    php85-mbstring \
+    php85-openssl \
+    php85-pdo_mysql \
+    php85-pecl-imagick \
+    php85-phar \
+    php85-session \
+    php85-simplexml \
+    php85-sodium \
+    php85-sqlite3 \
+    php85-xml \
+    php85-xmlreader \
+    php85-xmlwriter \
+    php85-zip \
     sqlite \
     supervisor \
     tzdata \
     "
 
-FROM docker.io/library/alpine:3.23.4 AS builder
+FROM docker.io/library/alpine:3.24.2 AS builder
 
 ARG HUMHUB_VERSION
 ARG BUILD_DEPS
@@ -93,7 +93,7 @@ RUN composer config --no-plugins allow-plugins.yiisoft/yii2-composer true && \
     grunt build-assets && \
     rm -rf ./node_modules
 
-FROM docker.io/library/alpine:3.23.4 AS base
+FROM docker.io/library/alpine:3.24.2 AS base
 
 ARG HUMHUB_VERSION
 ARG RUNTIME_DEPS
@@ -160,7 +160,7 @@ RUN chmod +x /usr/local/bin/php-fpm-healthcheck \
 
 EXPOSE 9000
 
-FROM docker.io/library/nginx:1.31.0-alpine AS humhub_nginx
+FROM docker.io/library/nginx:1.31.7-alpine AS humhub_nginx
 
 LABEL variant="nginx"
 

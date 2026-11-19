@@ -13,7 +13,7 @@ jobs:
   build_bases:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
     - name: Set Humhub version
       run: |
         HUMHUB_VERSION="$(cat versions.txt)"
@@ -42,7 +42,7 @@ jobs:
       matrix:
         target: ["allinone", "nginx", "phponly"]
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
     - name: Set Humhub version
       run: |
         HUMHUB_VERSION=$(cat versions.txt)
@@ -71,7 +71,7 @@ jobs:
     needs: build_variants
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
     - name: Set Humhub version
       run: |
         HUMHUB_VERSION=$(cat versions.txt)
@@ -95,7 +95,7 @@ jobs:
     - name: Logs
       run: docker compose logs
     - name: Test
-      run: curl http://localhost:8080/ -L --fail && curl http://localhost:8080/ -L --fail -s | grep 'Sign in</button>' -q
+      run: curl 'http://localhost:8080/' --location --fail --silent | grep --ignore-case '<body class="login-container">' --silent || ( curl 'http://localhost:8080/' --location --trace - ; exit 1;)
     - name: Test Email
       run: docker compose exec -T humhub php /var/www/localhost/htdocs/protected/yii test/email 'test@example.com' | grep 'Message successfully sent!' -q
     - name: Cleanup
@@ -105,7 +105,7 @@ jobs:
     needs: build_variants
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
     - name: Set Humhub version
       run: |
         HUMHUB_VERSION=$(cat versions.txt)
@@ -136,7 +136,7 @@ jobs:
     - name: Logs
       run: docker compose logs
     - name: Test
-      run: curl http://localhost:8080/ -L --fail && curl http://localhost:8080/ -L --fail -s | grep 'Sign in</button>' -q
+      run: curl 'http://localhost:8080/' --location --fail --silent | grep --ignore-case '<body class="login-container">' --silent || ( curl 'http://localhost:8080/' --location --trace - ; exit 1;)
     - name: Test Email
       run: docker compose exec -T humhub php /var/www/localhost/htdocs/protected/yii test/email 'test@example.com' | grep 'Message successfully sent!' -q
     - name: Cleanup
@@ -151,9 +151,9 @@ jobs:
       matrix:
         target: ["allinone", "nginx", "phponly"]
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
     - name: Login to registry
-      uses: docker/login-action@v4
+      uses: docker/login-action@v4.6.0
       with:
         registry: ghcr.io
         username: ${{ github.repository_owner }}
