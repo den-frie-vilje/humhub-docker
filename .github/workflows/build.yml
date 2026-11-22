@@ -168,7 +168,15 @@ jobs:
       with:
         name: build-${{ env.HUMHUB_VERSION }}-${{ matrix.target }}
     - name: Load, retag and Push images
+      # A published version tag stays as it is on a push: the sites pin its
+      # digest, and a push that only touches a workflow would move it. Run the
+      # workflow by hand (workflow_dispatch) to rebuild a published version;
+      # the Auto Update workflow dispatches it for a new one.
       run: |
+        if [ "${{ github.event_name }}" = push ] && docker manifest inspect "ghcr.io/${{ github.repository_owner }}/humhub-${{ matrix.target }}:${HUMHUB_VERSION}" > /dev/null 2>&1; then
+          echo "humhub-${{ matrix.target }}:${HUMHUB_VERSION} is published already; not replaced on a push"
+          exit 0
+        fi
         docker load --input "build-${HUMHUB_VERSION}-${{ matrix.target }}.tar.gz"
         docker tag "ghcr.io/${{ github.repository_owner }}/humhub:temp-${{ github.run_id }}-${HUMHUB_VERSION}-${{ matrix.target }}" "ghcr.io/${{ github.repository_owner }}/humhub-${{ matrix.target }}:${HUMHUB_VERSION}"
         docker push "ghcr.io/${{ github.repository_owner }}/humhub-${{ matrix.target }}:${HUMHUB_VERSION}"
