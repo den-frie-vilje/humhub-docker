@@ -1,9 +1,24 @@
+# Every day: bumps versions.txt to the newest HumHub patch release of the
+# current minor (update.sh) and, when it moved, pushes main and starts the
+# Build workflow, which publishes ghcr.io/den-frie-vilje/humhub-<flavour>:<version>
+# from main. The push comes from the workflow token, which starts no workflow
+# by itself, so the build is dispatched here. The site repositories check
+# versions.txt every day and move to the new image once its module test passes.
+
 name: Auto Update
 
 on:
+  schedule:
+    - cron: '0 3 * * *'
   repository_dispatch:
     types: check-update
   workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency: auto-update
 
 jobs:
   execute:
@@ -13,26 +28,17 @@ jobs:
     - uses: actions/checkout@v7
     - name: Set git config
       run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
+        git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
     - name: Execute Update
       id: update
       run: |
         . ./update.sh
-        { echo "CUR_VERSION=$CUR_VERSION"; echo "NEW_VERSION=$NEW_VERSION"; echo "GIT_BRANCH=$GIT_BRANCH"; } >> "$GITHUB_ENV"
-    - name: Check git status and log
+        { echo "CUR_VERSION=$CUR_VERSION"; echo "NEW_VERSION=$NEW_VERSION"; echo "UPDATE_NEEDED=$UPDATE_NEEDED"; } >> "$GITHUB_ENV"
+    - name: Push main and build
+      if: env.UPDATE_NEEDED == 'true'
+      env:
+        GH_TOKEN: ${{ github.token }}
       run: |
-        git status
-        git log
-    - name: Push changes
-      uses: ad-m/github-push-action@v1
-      with:
-        github_token: ${{ secrets.PAT }}
-        branch: "${{ env.GIT_BRANCH }}"
-    - name: pull-request
-      uses: repo-sync/pull-request@v2
-      with:
-        source_branch: "${{ env.GIT_BRANCH }}"
-        destination_branch: "main"
-        pr_title: "Update to ${{ env.NEW_VERSION }}"
-        github_token: ${{ secrets.PAT }}
+        git push origin HEAD:main
+        gh workflow run build.yml --ref main
