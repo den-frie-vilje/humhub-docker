@@ -9,7 +9,9 @@ name: Auto Update
 
 on:
   schedule:
-    - cron: '0 3 * * *'
+    # 02:00 UTC; the sites check at 05:20 UTC, hours after a build has
+    # published, so a new version reaches them the same morning.
+    - cron: '0 2 * * *'
   repository_dispatch:
     types: check-update
   workflow_dispatch:
